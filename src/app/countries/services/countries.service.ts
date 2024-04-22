@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class CountriesService {
-  private baseUrl: string = 'https://restcountries.com/v3.1';
+  private baseUrl: string = 'https://restcountries.com/v3';
 
   private _regions: Region[] = [
     Region.Africa,
@@ -41,6 +41,19 @@ export class CountriesService {
         }));
       }),
       tap((response) => console.log({ response }))
+    );
+  }
+
+  getCountryByAlphaCode(alphaCode: string): Observable<SmallCountry> {
+    console.log({ alphaCode });
+    const url: string = `${this.baseUrl}/alpha/${alphaCode}?fields=cca3,name,borders`;
+
+    return this.http.get<Country>(url).pipe(
+      map((country) => ({
+        name: country.name.common,
+        cca3: country.cca3,
+        borders: country.borders ?? [],
+      }))
     );
   }
 }
