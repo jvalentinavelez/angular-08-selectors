@@ -30,7 +30,7 @@ export class SelectorPageComponent implements OnInit {
     this.myForm
       .get('region')!
       .valueChanges.pipe(
-        tap((region) => console.log(region)),
+        tap(() => this.myForm.get('country')!.setValue('')),
         switchMap((region) =>
           this.countriesService.getCountriesByRegion(region)
         )
